@@ -1,5 +1,26 @@
 {
   "dependencies": {
     "express": "^4.19.2"
-  }
+  },
+  "name": "omn-backend-nodejs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Open-My-Network/omn-backend-nodejs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Open-My-Network/omn-backend-nodejs/issues"
+  },
+  "homepage": "https://github.com/Open-My-Network/omn-backend-nodejs#readme",
+  "description": ""
 }
