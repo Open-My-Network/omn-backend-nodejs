@@ -1,26 +1,32 @@
 {
-  "dependencies": {
-    "express": "^4.19.2"
-  },
-  "name": "omn-backend-nodejs",
+  "name": "omn-backn-end",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "type": "module",
-  "devDependencies": {},
   "scripts": {
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Open-My-Network/omn-backend-nodejs.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Open-My-Network/omn-backend-nodejs/issues"
-  },
-  "homepage": "https://github.com/Open-My-Network/omn-backend-nodejs#readme",
-  "description": ""
+  "dependencies": {
+    "axios": "^1.7.2",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.10.3",
+    "nodemon": "^3.1.4",
+    "react-redux": "^9.1.2",
+    "redux": "^5.0.1",
+    "redux-thunk": "^3.1.0",
+    "sequelize": "^6.37.3",
+    "slugs": "^0.1.3"
+  }
 }
