@@ -23,7 +23,7 @@ DevelopmentPlanModel.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    srt_month: {
+    str_month: {
       type: DataTypes.DATE,
       allowNull: false,
     },
@@ -34,7 +34,7 @@ DevelopmentPlanModel.init(
   },
   {
     sequelize: db.sequelize,
-    modelName: "student_development_plan",
+    modelName: "wp_student_development_plan",
     freezeTableName: true,
     timestamps: true,
     createdAt: true,

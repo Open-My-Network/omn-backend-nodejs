@@ -1,3 +1,7 @@
+import { HashPassword, CheckPassword } from "wordpress-hash-node";
+import jwt from "jsonwebtoken";
+import { v4 as uuidv4 } from "uuid";
+
 import UserModel from "../../users/model/UserModel.js";
 import UserMetaModel from "../../users/model/UserMetaModel.js";
 import db from "../../../config/db.js";
@@ -6,6 +10,7 @@ const registerUser = async (req, res) => {
   const transaction = await db.sequelize.transaction();
   try {
     let { user_email, user_pass, user_nicename, meta } = req.body;
+    user_pass = HashPassword(user_pass);
     let user = await UserModel.create(
       {
         user_login: user_nicename,
@@ -46,28 +51,39 @@ const loginUser = async (req, res) => {
   try {
     let { user_email, user_password } = req.body;
 
-    let userCheck = await UserModel.findOne({
+    let item = await UserModel.findOne({
       where: {
         user_email,
       },
     });
-    if (!userCheck) {
+    if (!item) {
       return res.status(400).json({
         status: 400,
-        message: "Item not found",
+        message: "User not found",
       });
     }
 
-    if (userCheck["user_pass"] !== user_password) {
+    let checked = CheckPassword(user_password, item["user_pass"]);
+
+    if (!checked) {
       return res.status(400).json({
         status: 400,
         message: "Password did not matched",
       });
     }
 
+    let { user_pass, ...data } = item.toJSON();
+    let token = jwt.sign(
+      {
+        data,
+      },
+      "secret",
+      { expiresIn: "1h" }
+    );
     return res.status(200).json({
       status: 200,
-      pass: userCheck,
+      accessToekn: token,
+      refreshToken: uuidv4(),
     });
   } catch (error) {
     return res.status(500).json({
@@ -77,4 +93,42 @@ const loginUser = async (req, res) => {
   }
 };
 
-export default { registerUser, loginUser };
+let verifyToken = async (req, res) => {
+  try {
+    let { refreshToken } = req.body;
+    if (!refreshToken) {
+      return res.status(400).json({
+        status: 400,
+        message: "Refresh token is required",
+      });
+    }
+    jwt.verify(refreshToken, "secret", (err, decoded) => {
+      if (err) {
+        return res.status(403).json({
+          status: 403,
+          message: "Invalid refresh token",
+        });
+      }
+
+      // Generate a new access token
+      const { id, email, user_nicename } = decoded;
+      const newAccessToken = jwt.sign(
+        { id, email, user_nicename },
+        "secret",
+        { expiresIn: "15m" }
+      );
+
+      return res.status(200).json({
+        status: 200,
+        accessToken: newAccessToken,
+      });
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      message: `Server error : ${error}`,
+    });
+  }
+};
+
+export default { registerUser, loginUser, verifyToken };

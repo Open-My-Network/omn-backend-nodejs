@@ -27,4 +27,7 @@ apiRoute.use("/development-plan", dpRoute);
 import pRoute from "../../src/components/post/router/PostRouter.js";
 apiRoute.use("/posts", pRoute);
 
+import pointRoute from "../components/points/routes/PointRoutes.js";
+apiRoute.use("/points", pointRoute);
+
 export default apiRoute;

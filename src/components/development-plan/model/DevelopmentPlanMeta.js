@@ -19,7 +19,7 @@ DevelopmentPlanMeta.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    goal_desciption: {
+    goal_description: {
       type: DataTypes.TEXT,
       allowNull: false,
     },

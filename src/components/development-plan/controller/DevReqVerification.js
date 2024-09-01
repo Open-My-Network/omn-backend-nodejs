@@ -6,15 +6,8 @@ const fetchRequest = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   const offset = (page - 1) * limit;
-  const status = req.query.status || null;
 
   try {
-    // let whereCondition = {};
-
-    // if (status) {
-    //   whereCondition.meta.meta_key = "status";
-    //   whereCondition.meta.meta_value = status;
-    // }
 
     let plans = await DevelopmentPlanVerify.findAndCountAll({
       // where: whereCondition,
@@ -49,6 +42,33 @@ const fetchRequest = async (req, res) => {
   }
 };
 
-const updateRequest = async (req, res) => {};
+const updateRequest = async (req, res) => {
+  let { id, status } = req.body;
+  try {
+    let plan = await DevelopmentPlanVerify.findOne({
+      where: { milestone_id: id, meta_key: "status" },
+    });
+    if (!plan) {
+      return res.status(404).json({
+        status: 404,
+        message: "Plan not found",
+      });
+    }
+
+    plan.meta_value = status;
+    await plan.save();
+
+    res.status(200).json({
+      status: 200,
+      message: "Status updated successfully",
+      data: plan,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      message: `Server error : ${error}`,
+    });
+  }
+};
 
 export default { fetchRequest, updateRequest };

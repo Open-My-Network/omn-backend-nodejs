@@ -8,5 +8,6 @@ const upload = multer();
 
 authR.post("/register", upload.none(), AuthController.registerUser);
 authR.post("/login", upload.none(), AuthController.loginUser);
+authR.post("/verify-token", upload.none(), AuthController.verifyToken);
 
 export default authR;

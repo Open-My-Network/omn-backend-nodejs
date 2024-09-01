@@ -1,0 +1,46 @@
+{
+  "sdp": {
+    "label": "Student Development Plan",
+    "points": 10
+  },
+  "survey": {
+    "label": "Suvery",
+    "points": 20
+  },
+  "sign-up": {
+    "label": "Sign Up",
+    "points": 15
+  },
+  "sign-in": {
+    "label": "Sign In",
+    "points": 5
+  },
+  "shout-it": {
+    "label": "Shout It",
+    "points": 5
+  },
+  "completed-profile": {
+    "label": "Completed Profile",
+    "points": 25
+  },
+  "referral": {
+    "label": "Referral",
+    "points": 15
+  },
+  "achievements": {
+    "label": "Achievement",
+    "points": null
+  },
+  "7-days-streak": {
+    "label": "Logged In: 7 Consecutive Days",
+    "points": 10
+  },
+  "14-days-streak": {
+    "label": "Logged In: 14 Consecutive Days",
+    "points": 20
+  },
+  "21-days-streak": {
+    "label": "Logged In: 21 Consecutive Days",
+    "points": 30
+  }
+}
