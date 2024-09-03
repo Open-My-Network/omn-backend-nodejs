@@ -61,7 +61,15 @@ const addSchool = async (req, res) => {
 
 const fetchSchools = async (req, res) => {
   try {
-    const schools = await SchoolModel.findAll({
+    let limit = parseInt(req.query.limit) || 10;
+    let page = parseInt(req.query.page) || 1;
+    let offset = (page - 1) * limit;
+
+    let totalCount = await SchoolModel.count();
+
+    let schools = await SchoolModel.findAll({
+      limit,
+      offset,
       include: [
         {
           model: GradeModel,
@@ -87,6 +95,12 @@ const fetchSchools = async (req, res) => {
     return res.status(200).json({
       status: 200,
       data: schools,
+      paginations: {
+        totalCount,
+        currentPage:page,
+        totalPages: Math.ceil(totalCount / limit),
+        limit,
+      }
     });
   } catch (error) {
     console.error("Error fetching schools:", error);

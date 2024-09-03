@@ -1,6 +1,30 @@
-import express from "express";
+import express from "express";  // Import swagger-jsdoc correctly
 
 const apiRoute = express.Router();
+
+
+import swaggerUi from "swagger-ui-express";
+import swaggerJSDoc from "swagger-jsdoc"; 
+
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "NodeJS API from Open My Network",
+      version: "1.0.0",
+    },
+    servers: [
+      {
+        url: "http://localhost:3000/api/",
+      },
+    ],
+  },
+  apis: ["./src/components/users/routes/user_route.js"], // Ensure the path is correct
+};
+
+const swaggerSpec = swaggerJSDoc(options); // Use swaggerJSDoc function correctly
+
+apiRoute.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 apiRoute.get("/", (req, res) => {
   return res.status(200).json({
@@ -9,25 +33,22 @@ apiRoute.get("/", (req, res) => {
   });
 });
 
+// Import routes
 import authR from "../../src/components/authorization/router/AuthRoute.js";
-apiRoute.use("/auth", authR);
-
 import uRoutes from "../../src/components/users/routes/user_route.js";
-apiRoute.use("/users", uRoutes);
-
 import sRoutes from "../../src/components/schools/router/SchoolRouter.js";
-apiRoute.use("/schools", sRoutes);
-
 import gradeRoute from "../../src/components/schools/router/GradeRouter.js";
-apiRoute.use("/grades", gradeRoute);
-
 import dpRoute from "../../src/components/development-plan/router/DPRouter.js";
-apiRoute.use("/development-plan", dpRoute);
-
 import pRoute from "../../src/components/post/router/PostRouter.js";
-apiRoute.use("/posts", pRoute);
-
 import pointRoute from "../components/points/routes/PointRoutes.js";
+
+// Use routes
+apiRoute.use("/auth", authR);
+apiRoute.use("/users", uRoutes);
+apiRoute.use("/schools", sRoutes);
+apiRoute.use("/grades", gradeRoute);
+apiRoute.use("/development-plan", dpRoute);
+apiRoute.use("/posts", pRoute);
 apiRoute.use("/points", pointRoute);
 
 export default apiRoute;
