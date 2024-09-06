@@ -27,6 +27,7 @@ app.use(bodyParser.json());
 // };
 app.use(cors());
 
+// route handling for api
 import apiRoute from "./src/config/api_routes.js";
 app.use("/api", apiRoute);
 
