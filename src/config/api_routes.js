@@ -1,10 +1,8 @@
-import express from "express";  // Import swagger-jsdoc correctly
-
-const apiRoute = express.Router();
-
-
+import express from "express";
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc"; 
+
+const apiRoute = express.Router();
 
 const options = {
   definition: {
@@ -19,10 +17,10 @@ const options = {
       },
     ],
   },
-  apis: ["./src/components/users/routes/user_route.js"], // Ensure the path is correct
+  apis: ["./src/components/users/routes/user_route.js"],
 };
 
-const swaggerSpec = swaggerJSDoc(options); // Use swaggerJSDoc function correctly
+const swaggerSpec = swaggerJSDoc(options);
 
 apiRoute.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
