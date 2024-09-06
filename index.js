@@ -31,6 +31,7 @@ app.use(cors());
 import apiRoute from "./src/config/api_routes.js";
 app.use("/api", apiRoute);
 
+// creating server
 app.listen(PORT, () => {
   console.log(`Server is loading at : ${PORT}`)
 });
