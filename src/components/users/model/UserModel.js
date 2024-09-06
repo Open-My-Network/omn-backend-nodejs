@@ -1,6 +1,8 @@
 import { DataTypes, Model } from "sequelize";
 import db from "../../../config/db.js";
 
+let DATABASE_PREFIX = process.env.DATABASE_PREFIX
+
 class UserModel extends Model {}
 
 UserModel.init(
@@ -43,7 +45,7 @@ UserModel.init(
   },
   {
     sequelize: db.sequelize,
-    modelName: "wp_users",
+    modelName: `${DATABASE_PREFIX}_users`,
     freezeTableName: true,
     timestamps: false,
     createdAt: false,

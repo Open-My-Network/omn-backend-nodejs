@@ -3,6 +3,8 @@ import { DataTypes, Model } from "sequelize";
 import UserModel from "./UserModel.js";
 import db from "../../../config/db.js";
 
+let DATABASE_PREFIX = process.env.DATABASE_PREFIX
+
 class UserMetaModel extends Model {}
 
 UserMetaModel.init(
@@ -32,7 +34,7 @@ UserMetaModel.init(
   },
   {
     sequelize: db.sequelize,
-    modelName: "wp_usermeta",
+    modelName: `${DATABASE_PREFIX}_usermeta`,
     freezeTableName: true,
     timestamps: false,
     createdAt: false,
