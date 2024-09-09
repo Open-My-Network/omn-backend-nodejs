@@ -9,10 +9,10 @@ const getCurrentDir = () => {
 
 const grantPoint = async (req, res) => {
   try {
-    const key = "sdp";
+    let key = req.body.key;
 
     // Define the path to the JSON file
-    const jsonFilePath = path.join(
+    let jsonFilePath = path.join(
       getCurrentDir(),
       "../../points/json/gamipress-point.json"
     );
@@ -36,7 +36,7 @@ const grantPoint = async (req, res) => {
       const pointDetails = item[key];
 
       const [result] = await db.sequelize.query(
-        "SELECT * FROM `wp_usermeta` WHERE user_id = 21 AND meta_key='user_points'"
+        "SELECT * FROM `wp_usermeta` WHERE user_id = 21 AND meta_key='omn_user_points_stats'"
       );
 
       if (result.length > 0) {
@@ -70,7 +70,7 @@ const grantPoint = async (req, res) => {
         const updatedMetaValue = serialize(userPointsData);
 
         await db.sequelize.query(
-          "UPDATE `wp_usermeta` SET meta_value = ? WHERE user_id = 21 AND meta_key='user_points'",
+          "UPDATE `wp_usermeta` SET meta_value = ? WHERE user_id = 21 AND meta_key='omn_user_points_stats'",
           { replacements: [updatedMetaValue] }
         );
 

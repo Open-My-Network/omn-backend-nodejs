@@ -33,8 +33,6 @@ DevelopmentPlanVerify.init(
     modelName: "wp_dp_verify_req",
     freezeTableName: true,
     timestamps: true,
-    createdAt: true,
-    updatedAt: true,
   }
 );
 
