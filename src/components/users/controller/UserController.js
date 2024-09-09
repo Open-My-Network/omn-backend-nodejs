@@ -35,7 +35,7 @@ const fetchUsers = async (req, res) => {
 
         // Extract specific meta data
         const metaData = user.meta.reduce((acc, meta) => {
-          if (['first_name', 'last_name', 'nickname', 'description', 'wp_capabilities'].includes(meta.meta_key)) {
+          if (['first_name', 'last_name', 'nickname', 'description', 'wp_capabilities', 'omn_user_points_stats'].includes(meta.meta_key)) {
             acc[meta.meta_key] = meta.meta_value;
           }
           return acc;

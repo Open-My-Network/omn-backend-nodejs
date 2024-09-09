@@ -95,7 +95,7 @@ const fetchSchools = async (req, res) => {
     return res.status(200).json({
       status: 200,
       data: schools,
-      paginations: {
+      pagination: {
         totalCount,
         currentPage:page,
         totalPages: Math.ceil(totalCount / limit),

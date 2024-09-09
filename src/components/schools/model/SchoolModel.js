@@ -2,6 +2,8 @@ import { DataTypes, Model } from "sequelize";
 
 import db from "../../../config/db.js";
 
+let DATABASE_PREFIX = process.env.DATABASE_PREFIX;
+
 class SchoolModel extends Model {}
 
 SchoolModel.init(
@@ -30,7 +32,7 @@ SchoolModel.init(
     timestamps: true,
     createdAt: true,
     updatedAt: true,
-    modelName: "wp_omn_schools",
+    modelName: `${DATABASE_PREFIX}_omn_schools`,
     freezeTableName: true,
   }
 );
