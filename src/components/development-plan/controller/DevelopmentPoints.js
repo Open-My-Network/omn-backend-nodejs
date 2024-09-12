@@ -30,7 +30,7 @@ const grantPoint = async (req, res) => {
       });
     }
 
-    // Use the data directly from the JSON root
+    // Check if key exists in the item
     const item = responseData;
     if (item.hasOwnProperty(key)) {
       const pointDetails = item[key];
@@ -40,10 +40,6 @@ const grantPoint = async (req, res) => {
       );
 
       if (result.length > 0) {
-        // Log the serialized data
-        console.log("Serialized meta_value:", result[0].meta_value);
-
-        // Unserialize the PHP serialized data
         let userPointsData;
         try {
           userPointsData = unserialize(result[0].meta_value);
@@ -55,10 +51,9 @@ const grantPoint = async (req, res) => {
           });
         }
 
-        // Always add the points to the total
+        // Add points
         userPointsData.total += pointDetails.points;
 
-        // Add or update the action in history
         userPointsData.history.push({
           key: Math.random().toString(36).substr(2, 10),
           action: key,
@@ -80,12 +75,10 @@ const grantPoint = async (req, res) => {
           updatedRecord: userPointsData,
         });
       } else {
-        return res
-          .status(404)
-          .json({ message: "User points record not found" });
+        return res.status(404).json({ message: "User points record not found" });
       }
     } else {
-      return res.json({ message: "Not Found" });
+      return res.status(404).json({ message: "Point key not found in the system" });
     }
   } catch (error) {
     return res.status(500).json({

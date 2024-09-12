@@ -1,3 +1,5 @@
+import phpSerialize from 'php-serialize';
+
 import UserModel from "../model/UserModel.js";
 import UserMetaModel from "../model/UserMetaModel.js";
 
@@ -5,27 +7,38 @@ import db from "../../../config/db.js";
 
 const fetchUsers = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const offset = (page - 1) * limit;
+    let page = parseInt(req.query.page) || 1;
+    let limit = parseInt(req.query.limit) || 10;
+    let offset = (page - 1) * limit;
 
-    const sortOrder = req.query.sort === 'desc' ? 'DESC' : 'ASC';
+    let sortOrder = req.query.sort === 'desc' ? 'DESC' : 'ASC';
+
+    // Extract role from query parameters
+    let role = req.query.role;
+    let email = req.query.email;
+
+    let whereCondition = {};
+
+    if(email){
+      whereCondition.user_email = email;
+    }
 
     // Fetch users and their metadata
     let items = await UserModel.findAll({
       limit,
       offset,
       order: [['id', sortOrder]],
+      where: whereCondition,
       include: [{ model: UserMetaModel, as: "meta" }],
     });
 
-    const totalCount = await UserModel.count();
+    let totalCount = await UserModel.count();
 
     // Function to extract and format the required data
-    const extractUserData = (users) => {
+    let extractUserData = (users) => {
       return users.map(user => {
         // Extract main user data
-        const extractedUser = {
+        let extractedUser = {
           id: user.id,
           user_login: user.user_login,
           user_email: user.user_email,
@@ -34,9 +47,34 @@ const fetchUsers = async (req, res) => {
         };
 
         // Extract specific meta data
-        const metaData = user.meta.reduce((acc, meta) => {
+        let metaData = user.meta.reduce((acc, meta) => {
           if (['first_name', 'last_name', 'nickname', 'description', 'wp_capabilities', 'omn_user_points_stats'].includes(meta.meta_key)) {
-            acc[meta.meta_key] = meta.meta_value;
+            if (meta.meta_key === 'wp_capabilities') {
+              // Deserialize wp_capabilities and return only role names
+              try {
+                let deserialized = phpSerialize.unserialize(meta.meta_value);
+                let roleNames = Object.keys(deserialized).filter(key => deserialized[key]);
+                
+                // If a role is specified, filter users by this role
+                if (role && roleNames.includes(role)) {
+                  acc[meta.meta_key] = roleNames;
+                } else if (!role) {
+                  acc[meta.meta_key] = roleNames;
+                }
+              } catch (e) {
+                acc[meta.meta_key] = []; // Fallback in case of error
+              }
+            } else if (meta.meta_key === 'omn_user_points_stats') {
+              // Deserialize omn_user_points_stats
+              try {
+                const deserialized = phpSerialize.unserialize(meta.meta_value);
+                acc[meta.meta_key] = deserialized;
+              } catch (e) {
+                acc[meta.meta_key] = meta.meta_value; // Fallback in case of error
+              }
+            } else {
+              acc[meta.meta_key] = meta.meta_value;
+            }
           }
           return acc;
         }, {});
@@ -46,12 +84,17 @@ const fetchUsers = async (req, res) => {
     };
 
     // Extract and format the user data
-    const formattedData = extractUserData(items);
+    let formattedData = extractUserData(items);
+
+    // If a role is specified, filter the formatted data
+    if (role) {
+      formattedData = formattedData.filter(user => user.wp_capabilities && user.wp_capabilities.includes(role));
+    }
 
     // Send the response
     return res.status(200).json({
       status: 200,
-      data: formattedData,
+      items: formattedData,
       pagination: {
         totalCount,
         currentPage: page,
