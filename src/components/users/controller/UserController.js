@@ -48,7 +48,7 @@ const fetchUsers = async (req, res) => {
 
         // Extract specific meta data
         let metaData = user.meta.reduce((acc, meta) => {
-          if (['first_name', 'last_name', 'nickname', 'description', 'wp_capabilities', 'omn_user_points_stats'].includes(meta.meta_key)) {
+          if (['first_name', 'last_name', 'nickname', 'school_name', 'grades', 'description', 'wp_capabilities', 'omn_user_points_stats'].includes(meta.meta_key)) {
             if (meta.meta_key === 'wp_capabilities') {
               // Deserialize wp_capabilities and return only role names
               try {

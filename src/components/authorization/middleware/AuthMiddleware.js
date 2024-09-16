@@ -3,18 +3,18 @@ import jwt from 'jsonwebtoken';
 let JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const authMiddleware = (req, res, next) => {
-  const token = req.header('Authorization').split(' ')[1];
+  const token = req.headers.authorization?.split(' ')[1];
 
   if (!token) {
-    return res.status(401).json({ message: 'Access denied. No token provided.' });
+    return res.status(401).json({ message: 'Authentication token missing' });
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET_KEY);
-    req.user = decoded;
+    const decodedToken = jwt.verify(token, JWT_SECRET_KEY);
+    req.user = decodedToken;
     next();
   } catch (err) {
-    res.status(400).json({ message: 'Invalid token.' });
+    return res.status(401).json({ message: 'Invalid token' });
   }
 };
 

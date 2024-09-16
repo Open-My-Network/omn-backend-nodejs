@@ -1,0 +1,47 @@
+{
+    "roles": [
+        {
+            "name": "admin",
+            "permissions": [
+                "create_principal",
+                "read_principal",
+                "update_principal",
+                "delete_principal",
+                "create_teacher",
+                "read_teacher",
+                "update_teacher",
+                "delete_teacher",
+                "create_student",
+                "read_student",
+                "update_student",
+                "delete_student"
+            ]
+        },
+        {
+            "name": "principal",
+            "permissions": [
+                "read_pricipal",
+                "delete_principal",
+                "create_teacher",
+                "read_teacher",
+                "update_teacher",
+                "delete_teacher",
+                "read_student",
+                "update_student",
+                "delete_student"
+            ]
+        },
+        {
+            "name": "teacher",
+            "permissions": [
+                "create_student",
+                "update_student",
+                "delete_student"
+            ]
+        },
+        {
+            "name": "student",
+            "permissions": []
+        }
+    ]
+}

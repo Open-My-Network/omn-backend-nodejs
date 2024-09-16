@@ -1,6 +1,9 @@
 import express from "express";
 import UserController from "../controller/UserController.js";
 
+import AuthMiddleware from "../../authorization/middleware/AuthMiddleware.js";
+import rbacMiddleware from "../../authorization/middleware/rbacMiddleware.js";
+
 const uRoutes = express.Router();
 
 /**
@@ -32,6 +35,7 @@ const uRoutes = express.Router();
  *        200:
  *          description: Users deleted successfully
  */
+// uRoutes.get("/", AuthMiddleware,rbacMiddleware(['admin']), UserController.fetchUsers);
 uRoutes.get("/", UserController.fetchUsers);
 uRoutes.delete("/", UserController.deleteUser);
 
