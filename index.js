@@ -11,7 +11,7 @@ import SchAssociation from "./src/components/schools/model/SchAssociation.js";
 import DevAssoc from "./src/components/development-plan/model/DevAssoc.js";
 import PostAssociation from "./src/components/post/model/PostAssociation.js";
 
-const PORT = process.env.PORT || 8888;
+const PORT = process.env.PORT || 8080;
 
 const app = express();
 
