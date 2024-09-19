@@ -34,6 +34,12 @@ const registerUser = async (req, res) => {
       if (m.meta_key === "wp_capabilities") {
         metaValue = phpSerialize.serialize({ subscriber: true }); // Serialize capabilities
       }
+
+      // Serialize grades
+      if (m.meta_key === "grades") {
+        // Assuming grades is an array or object, serialize accordingly
+        metaValue = phpSerialize.serialize(metaValue);
+      }
       
       return {
         user_id: user.id,
@@ -48,7 +54,17 @@ const registerUser = async (req, res) => {
       metaData.push({
         user_id: user.id,
         meta_key: "wp_capabilities",
-        meta_value: phpSerialize.serialize({ subscriber: true }), // Default capabilities
+        meta_value: phpSerialize.serialize({ subscriber: true }), 
+      });
+    }
+
+    // Ensure default grades if not provided
+    const gradesMeta = meta.find((m) => m.meta_key === "grades");
+    if (!gradesMeta) {
+      metaData.push({
+        user_id: user.id,
+        meta_key: "grades",
+        meta_value: phpSerialize.serialize([]), // Default to an empty array or object
       });
     }
 

@@ -6,6 +6,7 @@ import "dotenv/config";
 // use of database
 import db from "./src/config/db.js";
 db.authenticate();
+
 import UserAssociation from "./src/components/users/model/UserAssociation.js";
 import SchAssociation from "./src/components/schools/model/SchAssociation.js";
 import DevAssoc from "./src/components/development-plan/model/DevAssoc.js";
@@ -29,7 +30,7 @@ app.use(cors());
 
 // route handling for api
 import apiRoute from "./src/config/api_routes.js";
-app.use("/api", apiRoute);
+app.use("/", apiRoute);
 
 // creating server
 app.listen(PORT, () => {
