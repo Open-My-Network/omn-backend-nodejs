@@ -39,6 +39,7 @@ import gradeRoute from "../../src/components/schools/router/GradeRouter.js";
 import dpRoute from "../../src/components/development-plan/router/DPRouter.js";
 import pRoute from "../../src/components/post/router/PostRouter.js";
 import pointRoute from "../components/points/routes/PointRoutes.js";
+import coursesRoute from "../components/courses/router/CourseRouter.js";
 
 // Use routes
 apiRoute.use("/auth", authR);
@@ -48,5 +49,6 @@ apiRoute.use("/grades", gradeRoute);
 apiRoute.use("/development-plan", dpRoute);
 apiRoute.use("/posts", pRoute);
 apiRoute.use("/points", pointRoute);
+apiRoute.use("/courses", coursesRoute);
 
 export default apiRoute;
